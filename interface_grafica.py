@@ -62,10 +62,13 @@ def executar_interface_grafica():
         paleta_atual["valor"] = paleta
         p = paleta
 
+        # Fundo da janela
         janela.configure(bg=p["fundo"])
 
+        # Fundo principal
         estilo.configure("Raiz.TFrame", background=p["fundo"])
 
+        # Cards
         estilo.configure(
             "Card.TLabelframe",
             background=p["fundo_card"],
@@ -96,13 +99,45 @@ def executar_interface_grafica():
             font=("Segoe UI", 9, "bold"),
         )
 
-        estilo.configure("Titulo.TLabel", font=("Segoe UI Semibold", 18, "bold"), foreground=p["texto"], background=p["fundo"])
-        estilo.configure("Subtitulo.TLabel", font=("Segoe UI", 10), foreground=p["texto_suave"], background=p["fundo"])
-        estilo.configure("Texto.TLabel", font=("Segoe UI", 10), foreground=p["texto"], background=p["fundo_card"])
-        estilo.configure("TextoCard2.TLabel", font=("Segoe UI", 10), foreground=p["texto"], background=p["fundo_card2"])
-        estilo.configure("Resultado.TLabel", font=("Segoe UI Semibold", 18, "bold"), foreground=p["acento_clara"], background=p["fundo_card2"])
-        estilo.configure("Status.TLabel", font=("Segoe UI", 9), foreground=p["texto_suave"], background=p["fundo"])
+        # Títulos e textos
+        estilo.configure(
+            "Titulo.TLabel",
+            font=("Segoe UI Semibold", 18, "bold"),
+            foreground=p["texto"],
+            background=p["fundo"],
+        )
+        estilo.configure(
+            "Subtitulo.TLabel",
+            font=("Segoe UI", 10),
+            foreground=p["texto_suave"],
+            background=p["fundo"],
+        )
+        estilo.configure(
+            "Texto.TLabel",
+            font=("Segoe UI", 10),
+            foreground=p["texto"],
+            background=p["fundo_card"],
+        )
+        estilo.configure(
+            "TextoCard2.TLabel",
+            font=("Segoe UI", 10),
+            foreground=p["texto"],
+            background=p["fundo_card2"],
+        )
+        estilo.configure(
+            "Resultado.TLabel",
+            font=("Segoe UI Semibold", 18, "bold"),
+            foreground=p["acento_clara"],
+            background=p["fundo_card2"],
+        )
+        estilo.configure(
+            "Status.TLabel",
+            font=("Segoe UI", 9),
+            foreground=p["texto_suave"],
+            background=p["fundo"],
+        )
 
+        # Botão principal (Calcular)
         estilo.configure(
             "BotaoPrincipal.TButton",
             font=("Segoe UI", 10, "bold"),
@@ -119,6 +154,7 @@ def executar_interface_grafica():
             foreground=[("disabled", "#6b7280")],
         )
 
+        # Botão secundário (Limpar, Limpar histórico, etc.)
         estilo.configure(
             "BotaoSecundario.TButton",
             font=("Segoe UI", 9),
@@ -129,24 +165,36 @@ def executar_interface_grafica():
         )
         estilo.map(
             "BotaoSecundario.TButton",
-            background=[("active", "#1f2937" if p is PALETA_ESCURO else "#d1d5db"), ("pressed", p["fundo"])],
+            background=[
+                ("active", "#1f2937" if p is PALETA_ESCURO else "#d1d5db"),
+                ("pressed", p["fundo"]),
+            ],
             foreground=[("disabled", "#6b7280")],
         )
 
+        # Fundo específico para Combobox no tema escuro (um pouco mais claro pra seta aparecer)
+        if p is PALETA_ESCURO:
+            combo_bg = "#111827"
+        else:
+            combo_bg = p["fundo_card"]
+
+        # Combobox (tema)
         estilo.configure(
             "TCombobox",
-            fieldbackground=p["fundo_card"],
-            background=p["fundo_card"],
+            fieldbackground=combo_bg,
+            background=combo_bg,
             foreground=p["texto"],
             bordercolor=p["borda_card"],
             arrowsize=14,
         )
         estilo.map(
             "TCombobox",
-            fieldbackground=[("readonly", p["fundo_card"])],
-            selectbackground=[("readonly", p["fundo_card"])],
+            fieldbackground=[("readonly", combo_bg)],
+            selectbackground=[("readonly", combo_bg)],
             selectforeground=[("readonly", p["texto"])],
         )
+
+        # Entradas de texto
         estilo.configure(
             "TEntry",
             fieldbackground=p["fundo_card"],
@@ -156,6 +204,7 @@ def executar_interface_grafica():
             insertcolor=p["acento"],
         )
 
+        # Listbox de histórico
         lista_historico.config(
             bg=p["list_bg"],
             fg=p["texto"],
@@ -226,6 +275,15 @@ def executar_interface_grafica():
             atualizar_status(f"Última operação: {descricao} = {resultado}")
         except ValueError as erro:
             messagebox.showerror("Erro na operação", str(erro))
+
+    def limpar_campos():
+        """Limpa os campos de entrada e o resultado."""
+        entrada_num1.delete(0, tk.END)
+        entrada_num2.delete(0, tk.END)
+        rotulo_resultado_valor.config(text="–")
+        last_entry_focus["widget"] = entrada_num1
+        entrada_num1.focus()
+        atualizar_status("Campos limpos. Informe os números e clique em Calcular.")
 
     def atualizar_lista_historico():
         lista_historico.delete(0, tk.END)
@@ -356,15 +414,29 @@ def executar_interface_grafica():
     frame_superior.columnconfigure(1, weight=2)
     frame_superior.columnconfigure(2, weight=2)
 
-    frame_operacao = ttk.LabelFrame(frame_superior, text=" Operação e números ", padding=12, style="Card.TLabelframe")
+    frame_operacao = ttk.LabelFrame(
+        frame_superior,
+        text=" Operação e números ",
+        padding=12,
+        style="Card.TLabelframe",
+    )
     frame_operacao.grid(row=0, column=0, sticky="nsew", padx=(0, 10))
+    frame_operacao.columnconfigure(0, weight=1)
     frame_operacao.columnconfigure(1, weight=1)
 
     lbl_op = ttk.Label(frame_operacao, text="Operação:", style="Texto.TLabel")
     lbl_op.grid(row=0, column=0, sticky="w")
     combo_operacao = ttk.Combobox(
         frame_operacao,
-        values=["Somar", "Subtrair", "Multiplicar", "Dividir", "Potência", "Raiz", "Porcentagem"],
+        values=[
+            "Somar",
+            "Subtrair",
+            "Multiplicar",
+            "Dividir",
+            "Potência",
+            "Raiz",
+            "Porcentagem",
+        ],
         state="readonly",
         width=18,
     )
@@ -381,15 +453,34 @@ def executar_interface_grafica():
     entrada_num2 = ttk.Entry(frame_operacao, width=20)
     entrada_num2.grid(row=2, column=1, sticky="ew", pady=(6, 0))
 
+    # Frame de botões (mesma largura pros dois)
+    frame_botoes = ttk.Frame(frame_operacao, style="Raiz.TFrame")
+    frame_botoes.grid(row=3, column=0, columnspan=2, sticky="ew", pady=(12, 0))
+    frame_botoes.columnconfigure(0, weight=1)
+    frame_botoes.columnconfigure(1, weight=1)
+
     botao_calcular = ttk.Button(
-        frame_operacao,
+        frame_botoes,
         text="Calcular",
         style="BotaoPrincipal.TButton",
         command=calcular,
     )
-    botao_calcular.grid(row=3, column=0, columnspan=2, sticky="ew", pady=(12, 0))
+    botao_calcular.grid(row=0, column=0, sticky="nsew", padx=(0, 6), ipady=4)
 
-    frame_resultado = ttk.LabelFrame(frame_superior, text=" Resultado ", padding=12, style="Card2.TLabelframe")
+    botao_limpar_campos = ttk.Button(
+        frame_botoes,
+        text="Limpar campos",
+        style="BotaoSecundario.TButton",
+        command=limpar_campos,
+    )
+    botao_limpar_campos.grid(row=0, column=1, sticky="nsew", padx=(6, 0), ipady=4)
+
+    frame_resultado = ttk.LabelFrame(
+        frame_superior,
+        text=" Resultado ",
+        padding=12,
+        style="Card2.TLabelframe",
+    )
     frame_resultado.grid(row=0, column=1, sticky="nsew")
     frame_resultado.columnconfigure(0, weight=1)
 
@@ -398,7 +489,12 @@ def executar_interface_grafica():
     rotulo_resultado_valor = ttk.Label(frame_resultado, text="–", style="Resultado.TLabel")
     rotulo_resultado_valor.grid(row=1, column=0, sticky="w", pady=(8, 0))
 
-    frame_teclado = ttk.LabelFrame(frame_superior, text=" Teclado numérico ", padding=12, style="Card.TLabelframe")
+    frame_teclado = ttk.LabelFrame(
+        frame_superior,
+        text=" Teclado numérico ",
+        padding=12,
+        style="Card.TLabelframe",
+    )
     frame_teclado.grid(row=0, column=2, sticky="nsew", padx=(10, 0))
 
     for c in range(4):
@@ -410,9 +506,18 @@ def executar_interface_grafica():
     #  1  2  3  .
     #  0  (ocupa duas colunas)
     botoes = [
-        ("7", 0, 0), ("8", 0, 1), ("9", 0, 2), ("←", 0, 3),
-        ("4", 1, 0), ("5", 1, 1), ("6", 1, 2), ("C", 1, 3),
-        ("1", 2, 0), ("2", 2, 1), ("3", 2, 2), (".", 2, 3),
+        ("7", 0, 0),
+        ("8", 0, 1),
+        ("9", 0, 2),
+        ("←", 0, 3),
+        ("4", 1, 0),
+        ("5", 1, 1),
+        ("6", 1, 2),
+        ("C", 1, 3),
+        ("1", 2, 0),
+        ("2", 2, 1),
+        ("3", 2, 2),
+        (".", 2, 3),
         ("0", 3, 0),
     ]
 
@@ -424,14 +529,34 @@ def executar_interface_grafica():
             command=lambda v=texto: teclado_inserir(v),
         )
         if texto == "0":
-            btn.grid(row=linha, column=coluna, columnspan=2, sticky="nsew", padx=2, pady=2, ipady=4)
+            btn.grid(
+                row=linha,
+                column=coluna,
+                columnspan=2,
+                sticky="nsew",
+                padx=2,
+                pady=2,
+                ipady=4,
+            )
         else:
-            btn.grid(row=linha, column=coluna, sticky="nsew", padx=2, pady=2, ipady=4)
+            btn.grid(
+                row=linha,
+                column=coluna,
+                sticky="nsew",
+                padx=2,
+                pady=2,
+                ipady=4,
+            )
 
     for i in range(4):
         frame_teclado.rowconfigure(i, weight=1, minsize=36)
 
-    frame_historico = ttk.LabelFrame(frame_raiz, text=" Histórico de operações ", padding=12, style="Card.TLabelframe")
+    frame_historico = ttk.LabelFrame(
+        frame_raiz,
+        text=" Histórico de operações ",
+        padding=12,
+        style="Card.TLabelframe",
+    )
     frame_historico.grid(row=3, column=0, sticky="nsew", pady=(12, 6))
     frame_raiz.rowconfigure(3, weight=3)
     frame_historico.rowconfigure(0, weight=1)
@@ -451,7 +576,11 @@ def executar_interface_grafica():
     )
     lista_historico.grid(row=0, column=0, sticky="nsew")
 
-    scrollbar = ttk.Scrollbar(frame_historico_inner, orient="vertical", command=lista_historico.yview)
+    scrollbar = ttk.Scrollbar(
+        frame_historico_inner,
+        orient="vertical",
+        command=lista_historico.yview,
+    )
     lista_historico.config(yscrollcommand=scrollbar.set)
     scrollbar.grid(row=0, column=1, sticky="ns", padx=(6, 0))
 
