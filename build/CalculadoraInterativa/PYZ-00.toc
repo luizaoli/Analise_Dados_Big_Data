@@ -1,4 +1,4 @@
-('C:\\Users\\marci\\OneDrive\\Área de Trabalho\\Calculadora '
+('C:\\Users\\marci\\Projetos\\PUCPR\\Calculadora '
  'Interativa\\build\\CalculadoraInterativa\\PYZ-00.pyz',
  [('__future__',
    'C:\\Users\\marci\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\__future__.py',
@@ -184,8 +184,7 @@
    'C:\\Users\\marci\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\hashlib.py',
    'PYMODULE'),
   ('historico',
-   'C:\\Users\\marci\\OneDrive\\Área de Trabalho\\Calculadora '
-   'Interativa\\historico.py',
+   'C:\\Users\\marci\\Projetos\\PUCPR\\Calculadora Interativa\\historico.py',
    'PYMODULE'),
   ('http',
    'C:\\Users\\marci\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\http\\__init__.py',
@@ -299,8 +298,7 @@
    'C:\\Users\\marci\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\opcode.py',
    'PYMODULE'),
   ('operacoes',
-   'C:\\Users\\marci\\OneDrive\\Área de Trabalho\\Calculadora '
-   'Interativa\\operacoes.py',
+   'C:\\Users\\marci\\Projetos\\PUCPR\\Calculadora Interativa\\operacoes.py',
    'PYMODULE'),
   ('pathlib',
    'C:\\Users\\marci\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\pathlib\\__init__.py',
