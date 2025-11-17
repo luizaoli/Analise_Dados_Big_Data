@@ -110,27 +110,6 @@ CalculadoraInterativa.exe
 
 ---
 
-## 📦 Entrega para o professor
-
-Crie um .zip contendo:
-
-- código-fonte  
-- README.md  
-- docs/  
-- build_calculadora_exe.bat  
-- calculadora.ico  
-- CalculadoraInterativa.exe  
-
-Não inclua:
-
-- venv/  
-- build/  
-- dist/  
-- __pycache__/  
-- *.spec  
-
----
-
 ## 👩‍🎓 Sobre o projeto
 
 Desenvolvido por **Luiza de Oliveira Santos**  
