@@ -1,0 +1,27 @@
+# Ambiente virtual do Python
+venv/
+.env/
+.env.*
+
+# Pastas geradas por build (PyInstaller, etc.)
+build/
+dist/
+*.spec
+
+# Cache do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Arquivos de log temporários
+*.log
+
+# Arquivos de sistema
+Thumbs.db
+.DS_Store
+
+# Arquivos de editor/IDE
+.vscode/
+.idea/
+*.code-workspace
